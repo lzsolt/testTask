@@ -6,6 +6,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+	'defaultRoute' => 'site/login',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -22,11 +23,17 @@ $config = [
             'errorAction' => 'site/error',
         ],
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
+			'class' => 'yii\swiftmailer\Mailer',
+			'viewPath' => '@app/mail',
+			'useFileTransport' => true, //set this property to false to send mails to real email addresses
+			/*'transport' => [
+				'class' => 'Swift_SmtpTransport',
+				'host' => 'smtp.gmail.com',
+				'username' => '',
+				'password' => '',
+				'port' => '587',
+				'encryption' => 'tls',
+			],*/
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -37,6 +44,14 @@ $config = [
                 ],
             ],
         ],
+		'urlManager' => [
+			'class' => 'yii\web\UrlManager',
+			'enablePrettyUrl' => true,
+			'showScriptName' => false,
+			'rules' => array(
+				'<controller:[\w-]+>/<action:[\w-]+>'=>'<controller>/<action>',
+			),
+		],
         'db' => require(__DIR__ . '/db.php'),
     ],
     'params' => $params,
